@@ -6,7 +6,7 @@
 npm install
 ```
 
-- Configurar variables de entorno
+- Crear archivo .env en la raiz del proyecto y personalizar con los datos de conexión a MySQL
 
 ```bash
 PORT = 4000
