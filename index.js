@@ -7,7 +7,7 @@ const app = express()
 const userSchema = z.object({
   username: z.string({
     required_error: 'El campo username es requerido'
-  }).regex(/^[A-Za-z]||[0-9]+$/, 'El username no debe tener caracteres especiales'),
+  }).regex(/^[A-Za-z0-9]+$/, 'El username no debe tener caracteres especiales'),
   password: z.string({
     required_error: 'El campo contraseña es requerido'
   })
@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
       console.log({ results })
       if (results.length === 0) {
         return res.status(401).json({
-          message: 'Usuario no existe'
+          message: 'Datos incorrectos'
         })
       }
 
