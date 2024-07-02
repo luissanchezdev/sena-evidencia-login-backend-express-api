@@ -1,7 +1,21 @@
 import express from 'express'
 import { connection, PORT } from './db_connection.js'
+import { z } from 'zod'
 
 const app = express()
+
+const userSchema = z.object({
+  username: z.string({
+    required_error: 'El campo username es requerido'
+  }).regex(/^[A-Za-z]||[0-9]+$/, 'El username no debe tener caracteres especiales'),
+  password: z.string({
+    required_error: 'El campo contraseña es requerido'
+  })
+})
+
+const validateSchema = (object) => {
+  return userSchema.safeParse(object)
+}
 
 app.use(express.json())
 
@@ -13,6 +27,11 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body
+  const result = validateSchema(req.body)
+  console.log({ result })
+  if (result.error) {
+    return res.status(400).send(result.error.issues)
+  }
   connection.query(
     'SELECT * FROM usuarios WHERE username = ? AND password = ?', [username, password],
     function (err, results, fields) {
@@ -25,7 +44,7 @@ app.post('/login', (req, res) => {
       console.log({ results })
       if (results.length === 0) {
         return res.status(401).json({
-          message: 'Usuario no autorizado'
+          message: 'Usuario no existe'
         })
       }
 
