@@ -1,6 +1,7 @@
 import express from 'express'
 import { connection, PORT } from './db_connection.js'
 import { z } from 'zod'
+import cors from 'cors'
 
 const app = express()
 
@@ -18,6 +19,7 @@ const validateSchema = (object) => {
 }
 
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
   return res.status(200).json({
@@ -28,7 +30,7 @@ app.get('/', (req, res) => {
 app.post('/login', (req, res) => {
   const { username, password } = req.body
   const result = validateSchema(req.body)
-  console.log({ result })
+  // console.log({ result })
   if (result.error) {
     return res.status(400).send(result.error.issues)
   }
@@ -36,13 +38,13 @@ app.post('/login', (req, res) => {
     'SELECT * FROM usuarios WHERE username = ? AND password = ?', [username, password],
     function (err, results, fields) {
       if (err) {
-        console.log({ err })
         console.log('Error en la consulta a la base de datos')
         return res.status(500).send()
       }
 
       console.log({ results })
       if (results.length === 0) {
+        console.log('0 coincidencias de usuarios')
         return res.status(401).json({
           message: 'Datos incorrectos'
         })
