@@ -4,12 +4,12 @@ USE react_login_express;
 DROP TABLE IF EXISTS usuarios;
 
 CREATE TABLE usuarios (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(20) NOT NULL,
+  id VARCHAR(100) PRIMARY KEY,
+  username VARCHAR(20) NOT NULL UNIQUE,
   name VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL
+  password VARCHAR(75) NOT NULL
 );
 
-INSERT INTO usuarios(username, name, password) VALUES 
-  ('luissdev', 'Luis Sanchez', '1234'),
-  ('anderson', 'Anderson Ramirez', '1234');
+INSERT INTO usuarios(id, username, name, password) VALUES 
+  (1, 'luissdev', 'Luis Sanchez', '1234'),
+  (2, 'anderson', 'Anderson Ramirez', '1234');
