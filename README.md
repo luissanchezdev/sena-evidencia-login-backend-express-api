@@ -19,3 +19,8 @@ DB_PASSWORD = 'CONTRASENIA_BASE_DE_DATOS'
 ```
 npm run dev
 ```
+
+- Datos de login por defecto
+
+Usuario: 'anderson',
+Contraseña: 1234
